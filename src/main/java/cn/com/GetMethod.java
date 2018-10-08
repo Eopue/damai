@@ -42,11 +42,8 @@ public class GetMethod implements Method {
             //获得返回的结果
             if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 String srtResult = EntityUtils.toString(httpResponse.getEntity());
-                T t = JsonUtil.fromJson(srtResult, new TypeReference<T>() {
+                return JsonUtil.fromJson(srtResult, new TypeReference<T>() {
                 });
-
-                System.out.println(JsonUtil.toJson(t));
-                return t;
             }
         } catch (IOException e) {
             e.printStackTrace();

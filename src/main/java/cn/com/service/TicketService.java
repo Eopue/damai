@@ -1,6 +1,6 @@
 package cn.com.service;
 
-import cn.com.pojo.TicketInfo;
+import cn.com.pojo.BaseResponse;
 
 /**
  * The type TicketService.
@@ -16,5 +16,5 @@ public interface TicketService {
      * @param productId 产品ID
      * @return 返回结果
      */
-    TicketInfo getTicketInfo(String productId);
+    <T extends BaseResponse> T getTicketInfo(String productId);
 }

@@ -1,8 +1,8 @@
 package cn.com.service.impl;
 
 import cn.com.MethodFactory;
+import cn.com.pojo.BaseResponse;
 import cn.com.pojo.Constants;
-import cn.com.pojo.TicketInfo;
 import cn.com.service.TicketService;
 
 /**
@@ -14,7 +14,7 @@ import cn.com.service.TicketService;
  */
 public class TicketServiceImpl implements TicketService {
     @Override
-    public TicketInfo getTicketInfo(String productId) {
+    public <T extends BaseResponse> T getTicketInfo(String productId) {
         return MethodFactory
                 .methodFactory()
                 .method(Constants.HTTP_METHOD.GET)
