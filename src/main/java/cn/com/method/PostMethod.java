@@ -1,4 +1,4 @@
-package cn.com;
+package cn.com.method;
 
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -21,7 +21,7 @@ import cn.com.pojo.BaseResponse;
  */
 public class PostMethod implements Method {
     @Override
-    public <T extends BaseResponse> T execute(String url) {
+    public <T extends BaseResponse> T execute(String url, Class<? extends BaseResponse> clazz) {
         String test = "{\n" +
                 "    \"businessSubType\":\"2\",\n" +
                 "    \"businessType\":\"107001\",\n" +

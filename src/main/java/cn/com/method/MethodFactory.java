@@ -1,6 +1,6 @@
-package cn.com;
+package cn.com.method;
 
-import cn.com.pojo.Constants;
+import org.springframework.http.HttpMethod;
 
 /**
  * The type MethodFactory.
@@ -16,10 +16,10 @@ public class MethodFactory {
         return methodFactory;
     }
 
-    public Method method(String type) {
-        if (Constants.HTTP_METHOD.GET.equalsIgnoreCase(type)) {
+    public Method method(HttpMethod type) {
+        if (HttpMethod.GET.equals(type)) {
             return new GetMethod();
-        } else if (Constants.HTTP_METHOD.POST.equalsIgnoreCase(type)) {
+        } else if (HttpMethod.POST.equals(type)) {
             return new PostMethod();
         }
 

@@ -16,9 +16,6 @@ public class BaseResponse {
     @JsonProperty("Message")
     private Integer message;
 
-    @JsonProperty("Data")
-    private Object data;
-
     public Integer getStatus() {
         return status;
     }
@@ -33,13 +30,5 @@ public class BaseResponse {
 
     public void setMessage(Integer message) {
         this.message = message;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
     }
 }

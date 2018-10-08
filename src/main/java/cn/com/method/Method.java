@@ -1,4 +1,4 @@
-package cn.com;
+package cn.com.method;
 
 import cn.com.pojo.BaseResponse;
 
@@ -13,5 +13,5 @@ public interface Method {
     /**
      * 执行方法
      */
-    <T extends BaseResponse> T execute(String url);
+    <T extends BaseResponse> T execute(String url, Class<? extends BaseResponse> clazz);
 }

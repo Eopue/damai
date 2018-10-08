@@ -6,14 +6,14 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import java.util.List;
 
 /**
- * The type TICKET_INFO_URL.
+ * The type TicketInfo.
  * <p>
  *
  * @author Xiaolu.Liu
- * @date 2018/10/7
+ * @date 2018/10/8
  */
 @JsonRootName("Data")
-public class TicketInfo extends BaseResponse {
+public class TicketInfo {
     @JsonProperty("performs")
     private List<Perform> performs;
 
@@ -90,4 +90,5 @@ public class TicketInfo extends BaseResponse {
     public void setSaleStatus(Boolean saleStatus) {
         this.saleStatus = saleStatus;
     }
+
 }

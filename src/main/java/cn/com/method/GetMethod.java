@@ -1,6 +1,4 @@
-package cn.com;
-
-import com.fasterxml.jackson.core.type.TypeReference;
+package cn.com.method;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -12,6 +10,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 
+import cn.com.util.JsonUtil;
 import cn.com.pojo.BaseResponse;
 
 /**
@@ -24,7 +23,7 @@ import cn.com.pojo.BaseResponse;
 public class GetMethod implements Method {
 
     @Override
-    public <T extends BaseResponse> T execute(String url) {
+    public <T extends BaseResponse> T execute(String url, Class<? extends BaseResponse> clazz) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         RequestConfig requestConfig = RequestConfig.custom()
                 //设置连接超时时间
@@ -42,10 +41,9 @@ public class GetMethod implements Method {
             //获得返回的结果
             if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 String srtResult = EntityUtils.toString(httpResponse.getEntity());
-                return JsonUtil.fromJson(srtResult, new TypeReference<T>() {
-                });
+                return (T) JsonUtil.fromJson(srtResult, clazz.newInstance().getClass());
             }
-        } catch (IOException e) {
+        } catch (IOException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         } finally {
             try {
