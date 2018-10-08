@@ -2,7 +2,7 @@ package cn.com.service.impl;
 
 import org.springframework.http.HttpMethod;
 
-import cn.com.UrlEnum;
+import cn.com.constants.UrlEnum;
 import cn.com.method.MethodFactory;
 import cn.com.pojo.BaseResponse;
 import cn.com.service.TicketService;

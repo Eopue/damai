@@ -1,4 +1,4 @@
-package cn.com;
+package cn.com.constants;
 
 import cn.com.pojo.BaseResponse;
 import cn.com.pojo.TicketInfoResponse;
@@ -11,6 +11,9 @@ import cn.com.pojo.TicketInfoResponse;
  * @date 2018/10/8
  */
 public enum UrlEnum {
+    /**
+     * ticket信息
+     */
     TICKET_INFO_URL("https://piao.damai.cn/ajax/getInfo.html", TicketInfoResponse.class);
 
     String url;
