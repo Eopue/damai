@@ -12,6 +12,11 @@ import cn.com.pojo.BaseResponse;
 public interface Method {
     /**
      * 执行方法
+     *
+     * @param url the url
+     * @param clazz 返回时转换的类型
+     * @param <T> 泛型
+     * @return 泛型结果
      */
     <T extends BaseResponse> T execute(String url, Class<? extends BaseResponse> clazz);
 }
