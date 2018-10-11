@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class BaseResponse {
     @JsonProperty("Status")
-    private Integer status;
+    private Integer status = 200;
 
     @JsonProperty("Message")
     private Integer message;

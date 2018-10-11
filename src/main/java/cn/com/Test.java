@@ -1,9 +1,9 @@
 package cn.com;
 
-import cn.com.pojo.TicketInfoResponse;
+import java.util.IdentityHashMap;
+
 import cn.com.service.TicketService;
 import cn.com.service.impl.TicketServiceImpl;
-import cn.com.util.JsonUtil;
 
 /**
  * The type Test.
@@ -15,8 +15,7 @@ import cn.com.util.JsonUtil;
 public class Test {
     public static void main(String[] args) {
         TicketService ticketService = new TicketServiceImpl();
-        TicketInfoResponse ticketInfoResponse = ticketService.getTicketInfo("164911");
-
-        System.out.println(JsonUtil.toJson(ticketInfoResponse));
+        // 需要cookie
+        ticketService.confirmTicket(new IdentityHashMap<>());
     }
 }

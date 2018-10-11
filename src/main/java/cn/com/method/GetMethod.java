@@ -9,9 +9,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-
-import cn.com.util.JsonUtil;
-import cn.com.pojo.BaseResponse;
+import java.util.Map;
 
 /**
  * The type GetMethod.
@@ -23,7 +21,7 @@ import cn.com.pojo.BaseResponse;
 public class GetMethod implements Method {
 
     @Override
-    public <T extends BaseResponse> T execute(String url, Class<? extends BaseResponse> clazz) {
+    public String execute(String url, Map<String, String> headers) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         RequestConfig requestConfig = RequestConfig.custom()
                 //设置连接超时时间
@@ -36,14 +34,16 @@ public class GetMethod implements Method {
                 .build();
         HttpGet httpGet = new HttpGet(url);
         httpGet.setConfig(requestConfig);
+        for (Map.Entry<String, String> entry : headers.entrySet()) {
+            httpGet.setHeader(entry.getKey(), entry.getValue());
+        }
         try {
             HttpResponse httpResponse = httpClient.execute(httpGet);
             //获得返回的结果
             if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                String srtResult = EntityUtils.toString(httpResponse.getEntity());
-                return (T) JsonUtil.fromJson(srtResult, clazz.newInstance().getClass());
+                return EntityUtils.toString(httpResponse.getEntity());
             }
-        } catch (IOException | IllegalAccessException | InstantiationException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
