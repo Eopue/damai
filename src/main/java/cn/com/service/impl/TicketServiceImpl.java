@@ -1,6 +1,10 @@
 package cn.com.service.impl;
 
+import com.google.common.base.Strings;
+
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -8,8 +12,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.http.HttpMethod;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.IdentityHashMap;
 
+import cn.com.constants.TicketDetailEnum;
 import cn.com.constants.UrlEnum;
 import cn.com.method.MethodFactory;
 import cn.com.pojo.BaseResponse;
@@ -17,6 +24,7 @@ import cn.com.pojo.MecResponse;
 import cn.com.pojo.TicketInfoResponse;
 import cn.com.service.TicketService;
 import cn.com.util.JsonUtil;
+import cn.com.util.ReflectionUtils;
 
 /**
  * The type TicketServiceImpl.
@@ -31,16 +39,17 @@ public class TicketServiceImpl implements TicketService {
         String execute = MethodFactory
                 .methodFactory()
                 .method(HttpMethod.GET)
-                .execute(UrlEnum.TICKET_INFO_URL.getUrl() + "?projectId=" + productId, header);
-        return JsonUtil.fromJson(execute, new TypeReference<TicketInfoResponse>() {});
+                .execute(String.format(UrlEnum.TICKET_INFO_URL.getUrl(), productId), header);
+        return JsonUtil.fromJson(execute, new TypeReference<TicketInfoResponse>() {
+        });
     }
 
     @Override
-    public <T extends BaseResponse> T confirmTicket(IdentityHashMap<String, String> header) {
+    public <T> T confirmTicket(IdentityHashMap<String, String> header, String... urlParam) {
         String execute = MethodFactory
                 .methodFactory()
                 .method(HttpMethod.GET)
-                .execute(UrlEnum.CONFIRM.getUrl(), header);
+                .execute(String.format(UrlEnum.CONFIRM.getUrl(), urlParam), header);
 
         Document doc = Jsoup.parse(execute);
         Elements elements = doc.select("script");
@@ -50,6 +59,48 @@ public class TicketServiceImpl implements TicketService {
 
         MecResponse mecResponse = new MecResponse();
         mecResponse.setTid(tid);
+
+        // 获取确认订单数据
+        String orderHead = "window.document.domain = \"damai.cn\"";
+        elements.forEach(ele -> {
+            if (ele.data().contains(orderHead)) {
+                String[] vars = ele.data().split("var");
+                for (TicketDetailEnum detailEnum : TicketDetailEnum.values()) {
+                    for (String var : vars) {
+                        if (var.contains(detailEnum.getHtmlPro())) {
+                            String[] split = var.split("=");
+                            if (!Strings.isNullOrEmpty(detailEnum.getSubPro())) {
+                                String result = split[1].split("]")[0].split("\\[")[1];
+                                String s = result.replaceAll("\\\\", "");
+                                ReflectionUtils.setFieldValue(mecResponse, detailEnum.getPojoPro(), JsonUtil.fromJson(s));
+                            } else {
+                                String result = split[1].trim().substring(1, split[1].trim().length() - 2);
+                                String s = result.replaceAll("\\\\", "");
+                                if (detailEnum.equals(TicketDetailEnum.BUY_COMMODITY_LIST)) {
+                                    JsonNode jsonNode = JsonUtil.fromJson(s.substring(1, s.length() - 1));
+                                    JsonNode cityID = jsonNode.get("cityID");
+
+                                    ObjectNode objectNode = (ObjectNode) jsonNode;
+                                    objectNode.put("cityID", cityID.asText());
+                                    ReflectionUtils.setFieldValue(mecResponse, detailEnum.getPojoPro(), new ArrayList<>(Arrays.asList(objectNode)));
+                                } else {
+                                    ReflectionUtils.setFieldValue(mecResponse, detailEnum.getPojoPro(), s);
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        });
         return (T) mecResponse;
+    }
+
+    @Override
+    public String submitOrder(IdentityHashMap<String, String> header) {
+        return MethodFactory
+                .methodFactory()
+                .method(HttpMethod.POST)
+                .execute(UrlEnum.SUBMIT_ORDER.getUrl(), header);
     }
 }

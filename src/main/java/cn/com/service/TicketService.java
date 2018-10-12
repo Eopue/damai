@@ -25,9 +25,17 @@ public interface TicketService {
     /**
      * 获取mec
      *
+     * @param urlParam url路径参数
      * @param header 请求头
      * @param <T> 泛型
      * @return 返回结果
      */
-    <T extends BaseResponse> T confirmTicket(IdentityHashMap<String, String> header);
+    <T> T confirmTicket(IdentityHashMap<String, String> header, String... urlParam);
+
+    /**
+     * 提交
+     *
+     * @param header header
+     */
+    String submitOrder(IdentityHashMap<String, String> header);
 }
