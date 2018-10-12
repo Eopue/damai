@@ -33,7 +33,7 @@ public class Test {
         // 演唱会地点ID 用户提供
         confirmTicket.setCityId("848");
 
-
+        // 问题： 1. 演唱会价格 2.演唱会名字错误
         confirmTicket.setBusinessType("107001");
         confirmTicket.setCommodity("2%7c12520407%5e1%5e9100004");
         confirmTicket.setOid("0");
@@ -45,7 +45,8 @@ public class Test {
 
         MecResponse mecResponse = ticketService.confirmTicket(map, confirmTicket.getParams());
 
-        mecResponse.setProjectId(165374L);
+        mecResponse.setProjectId(Long.parseLong(confirmTicket.getProjectId()));
+        // 演唱会时间
         mecResponse.setPerformId(9104078L);
         mecResponse.setFrontPivilege(new HashMap<String, Object>(9){{
             put("groupId", "");

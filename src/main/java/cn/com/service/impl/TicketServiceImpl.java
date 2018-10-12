@@ -17,7 +17,6 @@ import java.util.Map;
 import cn.com.constants.TicketDetailEnum;
 import cn.com.constants.UrlEnum;
 import cn.com.method.MethodFactory;
-import cn.com.pojo.BaseResponse;
 import cn.com.pojo.MecResponse;
 import cn.com.pojo.TicketInfoResponse;
 import cn.com.service.TicketService;
@@ -33,7 +32,7 @@ import cn.com.util.ReflectionUtils;
  */
 public class TicketServiceImpl implements TicketService {
     @Override
-    public <T extends BaseResponse> T getTicketInfo(String productId, IdentityHashMap<String, String> header) {
+    public <T> T getTicketInfo(String productId, IdentityHashMap<String, String> header) {
         String execute = MethodFactory
                 .methodFactory()
                 .method(HttpMethod.GET)

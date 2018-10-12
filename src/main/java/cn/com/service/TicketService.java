@@ -2,8 +2,6 @@ package cn.com.service;
 
 import java.util.IdentityHashMap;
 
-import cn.com.pojo.BaseResponse;
-
 /**
  * The type TicketService.
  * <p>
@@ -20,7 +18,7 @@ public interface TicketService {
      * @param <T> 泛型
      * @return 返回结果
      */
-    <T extends BaseResponse> T getTicketInfo(String productId, IdentityHashMap<String, String> header);
+    <T> T getTicketInfo(String productId, IdentityHashMap<String, String> header);
 
     /**
      * 获取mec
@@ -36,6 +34,7 @@ public interface TicketService {
      * 提交
      *
      * @param header header
+     * @return 提交结果
      */
     String submitOrder(IdentityHashMap<String, String> header);
 }
