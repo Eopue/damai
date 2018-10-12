@@ -3,8 +3,6 @@ package cn.com.service.impl;
 import com.google.common.base.Strings;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,8 +11,8 @@ import org.jsoup.select.Elements;
 import org.springframework.http.HttpMethod;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.IdentityHashMap;
+import java.util.Map;
 
 import cn.com.constants.TicketDetailEnum;
 import cn.com.constants.UrlEnum;
@@ -72,17 +70,15 @@ public class TicketServiceImpl implements TicketService {
                             if (!Strings.isNullOrEmpty(detailEnum.getSubPro())) {
                                 String result = split[1].split("]")[0].split("\\[")[1];
                                 String s = result.replaceAll("\\\\", "");
-                                ReflectionUtils.setFieldValue(mecResponse, detailEnum.getPojoPro(), JsonUtil.fromJson(s));
+                                ReflectionUtils.setFieldValue(mecResponse, detailEnum.getPojoPro(), JsonUtil.fromJson(s, new TypeReference<Map<String, Object>>() {}));
                             } else {
                                 String result = split[1].trim().substring(1, split[1].trim().length() - 2);
                                 String s = result.replaceAll("\\\\", "");
                                 if (detailEnum.equals(TicketDetailEnum.BUY_COMMODITY_LIST)) {
-                                    JsonNode jsonNode = JsonUtil.fromJson(s.substring(1, s.length() - 1));
-                                    JsonNode cityID = jsonNode.get("cityID");
+                                    Map<String, Object> map = JsonUtil.fromJson(s.substring(1, s.length() - 1), new TypeReference<Map<String, Object>>() {});
 
-                                    ObjectNode objectNode = (ObjectNode) jsonNode;
-                                    objectNode.put("cityID", cityID.asText());
-                                    ReflectionUtils.setFieldValue(mecResponse, detailEnum.getPojoPro(), new ArrayList<>(Arrays.asList(objectNode)));
+                                    map.put("cityID", map.get("cityID").toString());
+                                    ReflectionUtils.setFieldValue(mecResponse, detailEnum.getPojoPro(), new ArrayList<Map<String, Object>>(){{add(map);}});
                                 } else {
                                     ReflectionUtils.setFieldValue(mecResponse, detailEnum.getPojoPro(), s);
                                 }

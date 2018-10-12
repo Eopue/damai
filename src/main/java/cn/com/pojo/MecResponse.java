@@ -1,8 +1,8 @@
 package cn.com.pojo;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The type MecResponse.
@@ -15,10 +15,10 @@ public class MecResponse {
     private String tid;
     private String businessSubType;
     private String businessType;
-    private List<JsonNode> buyCommodityList;
+    private List<Map<String, Object>> buyCommodityList;
     private String commodityParams = "2|12520407^1^9100004";
     private Integer deliveryType = 1;
-    private JsonNode frontPivilege;
+    private Map<String, Object> frontPivilege;
     private String groupId;
     private String insurance;
     private String invoice;
@@ -29,9 +29,17 @@ public class MecResponse {
     private Long payMethod = 0L;
     private Long performId;
     private Long projectId;
-    private String sKULimit;
+    private List<String> sKULimit = new ArrayList<>(0);
     private String sellChannel;
-    private JsonNode trader;
+    private Map<String, Object> trader;
+
+    public String getTid() {
+        return tid;
+    }
+
+    public void setTid(String tid) {
+        this.tid = tid;
+    }
 
     public String getBusinessSubType() {
         return businessSubType;
@@ -49,11 +57,11 @@ public class MecResponse {
         this.businessType = businessType;
     }
 
-    public List<JsonNode> getBuyCommodityList() {
+    public List<Map<String, Object>> getBuyCommodityList() {
         return buyCommodityList;
     }
 
-    public void setBuyCommodityList(List<JsonNode> buyCommodityList) {
+    public void setBuyCommodityList(List<Map<String, Object>> buyCommodityList) {
         this.buyCommodityList = buyCommodityList;
     }
 
@@ -73,11 +81,11 @@ public class MecResponse {
         this.deliveryType = deliveryType;
     }
 
-    public JsonNode getFrontPivilege() {
+    public Map<String, Object> getFrontPivilege() {
         return frontPivilege;
     }
 
-    public void setFrontPivilege(JsonNode frontPivilege) {
+    public void setFrontPivilege(Map<String, Object> frontPivilege) {
         this.frontPivilege = frontPivilege;
     }
 
@@ -153,11 +161,19 @@ public class MecResponse {
         this.performId = performId;
     }
 
-    public String getsKULimit() {
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
+    }
+
+    public List<String> getsKULimit() {
         return sKULimit;
     }
 
-    public void setsKULimit(String sKULimit) {
+    public void setsKULimit(List<String> sKULimit) {
         this.sKULimit = sKULimit;
     }
 
@@ -169,27 +185,11 @@ public class MecResponse {
         this.sellChannel = sellChannel;
     }
 
-    public JsonNode getTrader() {
+    public Map<String, Object> getTrader() {
         return trader;
     }
 
-    public void setTrader(JsonNode trader) {
+    public void setTrader(Map<String, Object> trader) {
         this.trader = trader;
-    }
-
-    public String getTid() {
-        return tid;
-    }
-
-    public void setTid(String tid) {
-        this.tid = tid;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
     }
 }
