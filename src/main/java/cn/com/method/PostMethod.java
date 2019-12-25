@@ -47,7 +47,11 @@ public class PostMethod implements Method {
             entity.setContentEncoding("UTF-8");
 
             // 发送Json格式的数据请求
-            entity.setContentType("application/json;charset=UTF-8");
+            if (headers.containsKey("content-type")) {
+                entity.setContentType(headers.get("content-type"));
+            } else {
+                entity.setContentType("application/json;charset=UTF-8");
+            }
             httpPost.setEntity(entity);
             CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
             //获得返回的结果

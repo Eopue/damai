@@ -29,7 +29,7 @@ public class MecResponse {
     private Long payMethod = 0L;
     private Long performId;
     private Long projectId;
-    private List<String> sKULimit = new ArrayList<>(0);
+    private List<SecurityInfo> sKULimit = new ArrayList<>(0);
     private String sellChannel;
     private Map<String, Object> trader;
 
@@ -169,11 +169,11 @@ public class MecResponse {
         this.projectId = projectId;
     }
 
-    public List<String> getsKULimit() {
+    public List<SecurityInfo> getsKULimit() {
         return sKULimit;
     }
 
-    public void setsKULimit(List<String> sKULimit) {
+    public void setsKULimit(List<SecurityInfo> sKULimit) {
         this.sKULimit = sKULimit;
     }
 

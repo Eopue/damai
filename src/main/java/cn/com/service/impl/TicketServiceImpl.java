@@ -12,12 +12,14 @@ import org.springframework.http.HttpMethod;
 
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.com.constants.TicketDetailEnum;
 import cn.com.constants.UrlEnum;
 import cn.com.method.MethodFactory;
 import cn.com.pojo.MecResponse;
+import cn.com.pojo.SecurityInfo;
 import cn.com.pojo.TicketInfoResponse;
 import cn.com.service.TicketService;
 import cn.com.util.JsonUtil;
@@ -92,10 +94,38 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    public String priceClick(IdentityHashMap<String, String> header, String... params) {
+        return MethodFactory
+                .methodFactory()
+                .method(HttpMethod.GET)
+                .execute(String.format(UrlEnum.PC_PRICE_CLICK.getUrl(), params), header);
+    }
+
+    @Override
+    public String goShopping(IdentityHashMap<String, String> header, String... params) {
+        return MethodFactory
+                .methodFactory()
+                .method(HttpMethod.GET)
+                .execute(String.format(UrlEnum.GO_SHOPPING.getUrl(), params), header);
+    }
+
+    @Override
     public String submitOrder(IdentityHashMap<String, String> header) {
         return MethodFactory
                 .methodFactory()
                 .method(HttpMethod.POST)
                 .execute(UrlEnum.SUBMIT_ORDER.getUrl(), header);
+    }
+
+    @Override
+    public List<SecurityInfo> querySecurityInfo(IdentityHashMap<String, String> header) {
+        String execute = MethodFactory
+                .methodFactory()
+                .method(HttpMethod.POST)
+                .execute(UrlEnum.SECURITY_INFO.getUrl(), header);
+
+        System.out.println(execute);
+        return JsonUtil.fromJson(execute, new TypeReference<List<SecurityInfo>>() {
+        });
     }
 }

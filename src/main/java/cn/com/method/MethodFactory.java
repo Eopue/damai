@@ -21,8 +21,8 @@ public class MethodFactory {
             return new GetMethod();
         } else if (HttpMethod.POST.equals(type)) {
             return new PostMethod();
+        } else {
+            return new GetMethodRe();
         }
-
-        return null;
     }
 }
